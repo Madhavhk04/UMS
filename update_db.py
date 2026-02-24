@@ -37,9 +37,27 @@ def update_db():
             UNIQUE(user_id, event_id)
         )
     ''')
-    
-    # Update Placement Drives table schema if needed (adding description column if missing)
-    
+        # Create Announcements table
+    print("Creating announcements table...")
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS announcements (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # Add admin user if not exists
+    print("Checking for admin user...")
+    cursor.execute("SELECT COUNT(*) FROM users WHERE username = 'admin'")
+    if cursor.fetchone()[0] == 0:
+        print("Adding admin user...")
+        cursor.execute("""
+            INSERT INTO users (username, password, user_type, full_name, email)
+            VALUES ('admin', 'admin123', 'admin', 'System Administrator', 'admin@university.edu')
+        """)
+
     # Update Placement Drives table schema if needed (adding description column if missing)
     # SQLite doesn't support IF NOT EXISTS for columns, so we check first
     print("Checking placement_drives schema...")

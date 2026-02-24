@@ -26,11 +26,39 @@
         </div>
 
         <nav class="sidebar-nav">
+            {% if session.user_type != 'admin' %}
             <a href="{{ url_for('dashboard') }}"
                 class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
+            {% endif %}
+
+            {% if session.user_type == 'admin' %}
+            <a href="{{ url_for('admin_dashboard') }}"
+                class="nav-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                <i class="fas fa-user-shield"></i>
+                <span>Admin Panel</span>
+            </a>
+
+            <a href="{{ url_for('admin_students') }}"
+                class="nav-item {% if request.endpoint == 'admin_students' %}active{% endif %}">
+                <i class="fas fa-user-graduate"></i>
+                <span>Manage Students</span>
+            </a>
+
+            <a href="{{ url_for('admin_faculties') }}"
+                class="nav-item {% if request.endpoint == 'admin_faculties' %}active{% endif %}">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Manage Faculty</span>
+            </a>
+
+            <a href="{{ url_for('admin_placements') }}"
+                class="nav-item {% if request.endpoint == 'admin_placements' %}active{% endif %}">
+                <i class="fas fa-briefcase"></i>
+                <span>Manage Placements</span>
+            </a>
+            {% endif %}
 
             {% if session.user_type == 'student' %}
             <a href="{{ url_for('academics') }}"

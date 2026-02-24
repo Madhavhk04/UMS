@@ -31,7 +31,7 @@
                     <td>
                         <span
                             class="cgpa-badge {% if student.cgpa >= 8.0 %}excellent{% elif student.cgpa >= 7.0 %}good{% else %}average{% endif %}">
-                            {{ "%.2f"|format(student.cgpa) }}
+                            {{ "%.2f"|format(student.cgpa or 0.0) }}
                         </span>
                     </td>
                     <td>{{ student.email }}</td>
@@ -64,7 +64,8 @@
         <div class="stat-box">
             <i class="fas fa-chart-line"></i>
             <div>
-                <strong>{{ "%.2f"|format(students|map(attribute='cgpa')|sum / students|length) }}</strong>
+                <strong>{{ "%.2f"|format((students|map(attribute='cgpa')|sum or 0.0) / ([students|length, 1]|max))
+                    }}</strong>
                 <span>Average CGPA</span>
             </div>
         </div>
